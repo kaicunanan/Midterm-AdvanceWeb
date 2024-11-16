@@ -41,6 +41,16 @@ function validateLoginCredentials($email, $password) {
 
     return $errors;
 }
+
+function checkLoginCredentials($email, $password, $users) {
+    foreach ($users as $user) {
+        if ($user['email'] === $email && $user['password'] === $password) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function displayErrors($errors) {
     // <strong class='alert alert-danger'>System Errors</strong>
     $output = "<ul>";
