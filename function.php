@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 
 function getUsers() {
     return [
@@ -42,6 +43,7 @@ function validateLoginCredentials($email, $password) {
     return $errors;
 }
 
+
 function checkLoginCredentials($email, $password, $users) {
     foreach ($users as $user) {
         if ($user['email'] === $email && $user['password'] === $password) {
@@ -49,16 +51,6 @@ function checkLoginCredentials($email, $password, $users) {
         }
     }
     return false;
-}
-
-function displayErrors($errors) {
-    // <strong class='alert alert-danger'>System Errors</strong>
-    $output = "<ul>";
-    foreach ($errors as $error) {
-        $output .= "<li>" . htmlspecialchars($error) . "</li>";
-    }
-    $output .= "</ul>";
-    return $output;
 }
 
 function checkUserSessionIsActive() {
@@ -70,12 +62,54 @@ function checkUserSessionIsActive() {
     }
 }
 
+
+
 function verifyActiveSession(){
     if (empty($_SESSION['email']) && basename($_SERVER['PHP_SELF']) != 'index.php') {
 
         header("Location: index.php"); 
         exit;
     }
+}
+
+
+function displayErrors($errors) {
+    // <strong class='alert alert-danger'>System Errors</strong>
+    $output = "<ul>";
+    foreach ($errors as $error) {
+        $output .= "<li>" . htmlspecialchars($error) . "</li>";
+    }
+    $output .= "</ul>";
+    return $output;
+}
+
+
+
+
+function renderErrorsToView($error) {
+    if (empty($error)) {
+        return null;
+    }
+    return "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                $error
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+}
+
+function getBaseURL() {
+    return 'http://' . $_SERVER['HTTP_HOST'] . '/midterms';
+}
+
+function checkDuplicateStudentData($student_data) {
+    // Check if the student_id already exists in the session
+    if (!empty($_SESSION['student_data'])) {
+        foreach ($_SESSION['student_data'] as $existing_student) {
+            if ($existing_student['student_id'] === $student_data['student_id']) {
+                return $existing_student; // Return the existing student if there's a match
+            }
+        }
+    }
+    return null; // Return null if no duplicate is found
 }
 
 function validateStudentData($student_data) {
