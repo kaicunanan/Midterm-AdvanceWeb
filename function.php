@@ -60,4 +60,23 @@ function displayErrors($errors) {
     $output .= "</ul>";
     return $output;
 }
+
+function checkUserSessionIsActive() {
+    // Only redirect if the user is already logged in and trying to access the login page
+    if (isset($_SESSION['email']) && basename($_SERVER['PHP_SELF']) == 'index.php') {
+
+        header("Location: dashboard.php");
+        exit;
+    }
+}
+
+function verifyActiveSession(){
+    if (empty($_SESSION['email']) && basename($_SERVER['PHP_SELF']) != 'index.php') {
+
+        header("Location: index.php"); 
+        exit;
+    }
+}
+
+
 ?>
