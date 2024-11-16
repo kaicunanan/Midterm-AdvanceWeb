@@ -78,5 +78,46 @@ function verifyActiveSession(){
     }
 }
 
+function validateStudentData($student_data) {
+    $errors = [];
+
+    // Check if student ID is provided
+    if (empty($student_data['student_id'])) {
+        $errors[] = "Student ID is required.";
+    }
+
+    // Check if first name is provided
+    if (empty($student_data['first_name'])) {
+        $errors[] = "First Name is required.";
+    }
+
+    // Check if last name is provided
+    if (empty($student_data['last_name'])) {
+        $errors[] = "Last Name is required.";
+    }
+
+    // Optional: Add more validation rules as needed (e.g., length check, format validation)
+    return $errors;
+}
+
+function getSelectedStudentIndex($student_id) {
+    if (!empty($_SESSION['student_data'])) {
+        foreach ($_SESSION['student_data'] as $index => $student) {
+            if ($student['student_id'] === $student_id) {
+                return $index; // Return index if found
+            }
+        }
+    }
+    return null; // Return null if student_id not found
+}
+
+// Function to get a student's data by index
+function getSelectedStudentData($index) {
+    if (isset($_SESSION['student_data'][$index])) {
+        return $_SESSION['student_data'][$index];
+    }
+    return false;
+}
+
 
 ?>
